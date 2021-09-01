@@ -1,0 +1,38 @@
+image: registry.git-ce.rwth-aachen.de/hpc-research/correctness/must-ci:latest
+
+
+stages:
+   - build
+
+variables:
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+  DOCKER_TLS_CERTDIR: "/certs"
+
+build-noopenmp:
+   stage: build
+   script:
+     - cd src
+     - make OPENMP=no
+     - mustrun -np 4 ./gsnap .././qasnap/center_src/in11 base.out
+     
+   artifacts:
+     paths:
+      - $CI_PROJECT_DIR/**/*.html
+      
+#build-openmp:
+#   stage: build
+#
+#   variables:
+#     OMP_NUM_THREADS: 4
+#
+#   script:
+#     - mkdir build-openmp
+#     - cd build-openmp
+#     - cmake -DCMAKE_BUILD_TYPE=Release -DWITH_OPENMP=On ..
+#     - make 
+#     - mustrun lulesh2.0 -np 8
+#     
+#   artifacts:
+#     paths:
+#      - $CI_PROJECT_DIR/**/*.html

@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build-noopenmp:
+    docker:
+      - image: jprotze/must:1.7.1
+    steps:
+      - checkout
+      - run: cd src && make OPENMP=no
+      - run: mustrun -np 4 src/gsnap qasnap/center_src/in01 base.out
+      - store_artifacts: 
+          path: MUST_Output.html
+      - store_artifacts: 
+          path: MUST_Output-files
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build-noopenmp
