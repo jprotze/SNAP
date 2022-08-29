@@ -5,8 +5,8 @@ jobs:
       - image: jprotze/must:1.8.0-rc1
     steps:
       - checkout
-      - run: cd src && make OPENMP=no
-      - run: mustrun -np 4 src/gsnap qasnap/center_src/in01 base.out
+      - run: cd src && make OPENMP=no OPT=no
+      - run: env MUST_FILTER_FILE=$PWD/.circleci/filterfile.txt mustrun --must:stacktrace backward -np 4 src/gsnap_db qasnap/center_src/in01 base.out
       - store_artifacts: 
           path: MUST_Output.html
       - store_artifacts: 
