@@ -2,7 +2,7 @@ version: 2
 jobs:
   build-noopenmp:
     docker:
-      - image: jprotze/must:1.7.1
+      - image: jprotze/must:1.8.0-rc1
     steps:
       - checkout
       - run: cd src && make OPENMP=no
